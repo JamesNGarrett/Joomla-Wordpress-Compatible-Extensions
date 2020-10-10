@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.9.0">
+	<name>Module Widget Skeleton</name> 
+	<author>Preflight</author> 
+	<creationDate>2020-10-10</creationDate> 
+	<version>1.0.0</version> 
+	<description>Skeleton for a Joomla-Wordpress Module-Widget</description>
+	<files>
+        <filename module="mod_module_widget">mod_module_widget.php</filename>
+        <filename>index.html</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="content" type="textarea" label="Content" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
