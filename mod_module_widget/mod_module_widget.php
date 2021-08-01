@@ -47,26 +47,30 @@ class ModModuleWidgetRenderer
 	}
 }
 
-/* Joomla Modules Entry Files are only called when they display as any admin or installation etc is done via the xml
- * When the file is called in Joomla two object vars are present, $module (info about the module including the title) and $params (the settings)
- *
- *
+// ------------ WP -----------------------------------------------
+
+/* Joomla Modules Entry Files are only called when they display 
+ * as any admin or installation etc is done via the xml
+ * When the file is called in Joomla two object vars are present, 
+ * $module (info about the module including the title) and $params (the settings)
 */
 
 if($cms == 'joomla'){
    	$renderer = new ModModuleWidgetRenderer(
-   		$module->title,
+   		$module->showtitle ? $module->title : '',
    		$params->get('content','')
    	);
    	echo $renderer->render();
    	return;
 }
 
-class My_Widget extends WP_Widget {
+// ------------ WP -----------------------------------------------
+
+class ModModuleWidget extends WP_Widget {
 
     public function __construct() {
         parent::__construct(
-        	'module_widget',
+        	'mod_module_widget',
         	'Module Widget Skeleton',
         	['description' => 'Skeleton for a Joomla-Wordpress Module-Widget']
         );
@@ -77,24 +81,29 @@ class My_Widget extends WP_Widget {
  	 * $instance = array of data which is stored in the options table in a serialized format
  	 */ 
     public function widget( $args, $instance ) {
-    	$title = apply_filters( 'widget_title', $instance['title'] );
-    	$title = !empty($title) ? $args['before_title'] . $title . $args['after_title'] : '';
-		
-		$content = 'Testing Only';
-
-    	$renderer = new ModModuleWidgetRenderer($title,$content,$args);
+    	$renderer = new ModModuleWidgetRenderer(
+    		apply_filters('widget_title', $instance['title']),
+    		apply_filters('widget_text', $instance['content']),
+    		$args
+    	);
     	echo $renderer->render();
-    	echo 'test';
     }
+
+ 	/* Backend admin form and save
+     */ 
  
     public function form( $instance ) {
     	
     	$instance['title'] = $instance['title'] ?? 'New Title';
 
     	$html  = '';
-    	$html .= '<p class="hi">';
+    	$html .= '<p>';
     	$html .= '<label for="' . $this->get_field_id( "title" ) . '">Title:</label>';
     	$html .= '<input class="widefat" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( $instance['title'] ) . '" />';
+		$html .= '</p>';
+		$html .= '<p>';
+		$html .= '<label for="' . $this->get_field_id( "content" ) . '" id="' . $this->get_field_id( "content" ) . '-label">Content</label>';
+		$html .= '<textarea id="' . $this->get_field_id( "content" ) . '" class="widefat content" rows="16" cols="20"></textarea>';
 		$html .= '</p>';
 
 		echo $html;
@@ -103,15 +112,15 @@ class My_Widget extends WP_Widget {
     public function update($new_instance, $old_instance){
         $instance = [];
 		$instance['title'] = !empty($new_instance['title']) ? strip_tags($new_instance['title']) : '';
+		$instance['content'] = !empty($new_instance['content']) ? strip_tags($new_instance['content']) : '';
 		return $instance;
     }
 }
 
 // ====================== Wordpress Init the Widget =============
-if($cms == 'wp'){
-	add_action( 'widgets_init', 'pf_register_widgets' );
 
-	function pf_register_widgets() {
-	    register_widget( 'My_Widget' );
-	}
+add_action( 'widgets_init', 'mod_module_widget_register_widgets' );
+
+function mod_module_widget_register_widgets() {
+    register_widget( 'ModModuleWidget' );
 }
