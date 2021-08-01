@@ -68,7 +68,12 @@ if($cms == 'joomla'){
 
 class ModModuleWidget extends WP_Widget {
 
+	private $xml_config = [];
+
     public function __construct() {
+
+    	$this->xml_config = $this->parseXmlConfig('mod_module_widget.xml');
+
         parent::__construct(
         	'mod_module_widget',
         	'Module Widget Skeleton',
@@ -114,6 +119,13 @@ class ModModuleWidget extends WP_Widget {
 		$instance['title'] = !empty($new_instance['title']) ? strip_tags($new_instance['title']) : '';
 		$instance['content'] = !empty($new_instance['content']) ? strip_tags($new_instance['content']) : '';
 		return $instance;
+    }
+
+    private function parseXmlConfig($filename)
+    {
+    	$xml = simplexml_load_file($filename, "SimpleXMLElement", LIBXML_NOCDATA);
+		$json = json_encode($xml);
+		return json_decode($json,TRUE);
     }
 }
 
