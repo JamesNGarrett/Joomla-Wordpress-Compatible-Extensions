@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /*
 Plugin Name: Module Widget Skeleton
@@ -16,9 +16,6 @@ if(defined('_JEXEC')){
 } else {
 	die();
 }
-
-function d($t){echo '<pre>' . print_r($t,1) . '</pre>';}
-function dd($t){d($t);die();}
 
 // ============ Any General Code should be Placed in here =========
 class ModModuleWidgetRenderer
