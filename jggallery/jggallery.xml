@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.7" type="plugin" group="content" method="upgrade">
+	<name>JG Gallery</name>
+	<author>James</author>
+	<creationDate>August 2023</creationDate>
+	<authorUrl>www.jamesgarrett.com.au</authorUrl>
+	<version>1.0.0</version>
+	<description>Simple Gallery Plugin</description>
+	<files>
+		<filename plugin="jggallery">jggallery.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="thumbnail_width" type="number" default="150" label="Thumbnail Width" />
+				<field name="image_width" type="number" default="800" label="Large Image Width" />
+				<field name="image_quality" type="number" default="80" label="Image Quality (1-100)" max="100" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
